@@ -5,3 +5,5 @@ class Post(db.Model):
     subject = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
+    modify_date = db.Column(db.DateTime(), nullable=True)
+
