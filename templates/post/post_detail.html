@@ -3,3 +3,8 @@
 <div>
     {{ post.content }}
 </div>
+<div>
+    <a href="{{ url_for('main.modify', post_id=post.id) }}"
+    >수정</a>
+    <a href="{{ url_for('main.delete', post_id=post.id) }}">삭제</a>
+</div>

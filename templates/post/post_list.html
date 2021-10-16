@@ -1,9 +1,17 @@
 {% if post_list %}
     <ul>
-    {% for post in post_list %}
-        <li><a href="/detail/{{ post.id }}/">{{ post.subject }}</a></li>
-    {% endfor %}
+        {% for post in post_list %}
+            <li><a href="/detail/{{ post.id }}/">{{ post.subject }}</a>
+                <p>{{ post.content }}</p></li>
+
+
+        {% endfor %}
     </ul>
 {% else %}
     <h1>게시글이 없습니다.</h1>
 {% endif %}
+
+<form action="{{ url_for('main.create') }}" method="post">
+    <textarea name="content" id="content" rows="15"></textarea>
+    <input type="submit" value="답변등록">
+</form>
