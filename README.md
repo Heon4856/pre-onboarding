@@ -7,14 +7,31 @@
 
 
 # 2. 실행 방법
-```shell
-pip install -r requirements.txt
+
+### 프로젝트 설치
+
+```bash
+https://github.com/Heon4856/pre-onboarding.git
 ```
+
+ ### 환경 구축
+
+```bash
+python -m venv venv // 가상 환경 폴더 생성
+
+source venv/[Scripts|bin]/activate // 가상 환경 접속
+
+pip install -r requirements.txt // 필요한 패키지 설치
+```
+
 ```shell
 flask db init
-```
-```shell
 flask db migrate
+flask db upgrade
+```
+
+```shell
+flask run
 ```
 
 
