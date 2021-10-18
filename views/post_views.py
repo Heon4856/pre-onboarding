@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, jsonify,request
 from flask_apispec import marshal_with, use_kwargs
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from service import post_service
-from serializers.post import PostListSchema, PostSchema, CreatePostRequestSchema
+from serializers.post import  PostSchema, CreatePostRequestSchema
 
 bp = Blueprint('post', __name__, url_prefix='/')
 
