@@ -6,6 +6,7 @@ class Post(db.Model):
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
     modify_date = db.Column(db.DateTime(), nullable=True)
+    user_id = db.Column(db.ForeignKey('user.id'))
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)

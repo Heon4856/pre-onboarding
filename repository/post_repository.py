@@ -9,20 +9,26 @@ def detail(post_id):
     post = Post.query.get_or_404(post_id)
     return post
 
-def create(subject,content,date):
-    post = Post(subject=subject, content=content, create_date=date)
+def create(subject,content,date,current_user):
+    post = Post(subject=subject, content=content, create_date=date,user_id=current_user)
     db.session.add(post)
     db.session.commit()
 
-def delete(post_id):
+def delete(post_id,current_user_id):
     post = Post.query.get_or_404(post_id)
-    db.session.delete(post)
-    db.session.commit()
+    if post.user_id == current_user_id:
+        db.session.delete(post)
+        db.session.commit()
+        return True
+    return False
 
 
-def modify(post_id,subject,content,modify_date):
+def modify(post_id,subject,content,modify_date, current_user_id):
     post = Post.query.get_or_404(post_id)
-    post.content=content
-    post.subject=subject
-    post.modify_date=modify_date
-    db.session.commit()
+    if post.user_id ==current_user_id:
+        post.content=content
+        post.subject=subject
+        post.modify_date=modify_date
+        db.session.commit()
+        return True
+    return False
