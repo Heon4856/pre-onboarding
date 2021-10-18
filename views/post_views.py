@@ -28,9 +28,13 @@ def create(subject, content):
 
 @bp.route('/delete/<int:post_id>', methods=['DELETE'])
 def delete(post_id):
-    return post_service.delete_post(post_id)
+    post_service.delete_post(post_id)
+    return make_response('',204)
 
 
 @bp.route('/modify/<int:post_id>', methods=['PATCH', 'PUT'])
-def modify(post_id):
-    return post_service.modify_post(post_id)
+@use_kwargs(CreatePostRequestSchema)
+@marshal_with(None, code=200)
+def modify(post_id,subject,content):
+    post_service.modify_post(post_id,subject,content)
+    return  make_response('success',200)

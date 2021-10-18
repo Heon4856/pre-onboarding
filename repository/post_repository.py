@@ -14,20 +14,15 @@ def create(subject,content,date):
     db.session.add(post)
     db.session.commit()
 
-def delete():
+def delete(post_id):
     post = Post.query.get_or_404(post_id)
     db.session.delete(post)
     db.session.commit()
-    return 200
 
 
-def modify():
+def modify(post_id,subject,content,modify_date):
     post = Post.query.get_or_404(post_id)
-
-    if request.method == 'POST':
-        form = PostForm()
-        if form.validate_on_submit():
-            form.populate_obj(post)
-            post.modify_date = datetime.now()  # 수정일시 저장
-            db.session.commit()
-        return redirect(url_for('main.detail', post_id=post_id))
+    post.content=content
+    post.subject=subject
+    post.modify_date=modify_date
+    db.session.commit()

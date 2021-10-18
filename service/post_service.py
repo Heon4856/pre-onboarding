@@ -15,5 +15,6 @@ def create_post(subject,content):
 def delete_post(post_id):
     return post_repository.delete(post_id)
 
-def modify_post(post_id):
-    return post_repository.modify(post_id)
+def modify_post(post_id,subject,content):
+    modify_date=datetime.now()
+    return post_repository.modify(post_id,subject,content,modify_date)
