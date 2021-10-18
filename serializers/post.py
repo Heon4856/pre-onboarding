@@ -13,10 +13,6 @@ class PostSchema(Schema):
     modify_date = fields.DateTime(allow_none=True)
 
 
-class PostListSchema(Schema):
-    post_list = fields.List(fields.Nested(PostSchema))
-
-
 class CreatePostRequestSchema(Schema):
     subject = fields.String(allow_none=False)
     content = fields.String(allow_none=False)
