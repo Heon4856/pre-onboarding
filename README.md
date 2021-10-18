@@ -19,3 +19,153 @@ flask db migrate
 
 
 # 3. api명세
+https://app.swaggerhub.com/apis-docs/Heon4856/aaxc/1.0.0
+
+
+### Read -post_list
+```shell
+curl -X GET "http://localhost:5000/" -H "accept: application/json"
+
+[
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:53.119194",
+    "id": 43,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:52.952255",
+    "id": 42,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:52.649007",
+    "id": 41,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:52.462845",
+    "id": 40,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:52.272159",
+    "id": 39,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:52.095329",
+    "id": 38,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:51.910227",
+    "id": 37,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:51.734569",
+    "id": 36,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:51.566497",
+    "id": 35,
+    "modify_date": null,
+    "subject": "지워보자"
+  },
+  {
+    "content": "지울 것",
+    "create_date": "2021-10-18T15:05:51.385798",
+    "id": 34,
+    "modify_date": null,
+    "subject": "지워보자"
+  }
+]
+```
+
+### Read -post
+
+```shell
+curl -X GET "http://localhost:5000/detail/1/" -H "accept: application/json"
+```
+
+```shell
+{
+  "content": "게시글",
+  "create_date": "2021-10-18T14:26:54.177247",
+  "id": 1,
+  "modify_date": null,
+  "subject": "게시글"
+}
+```
+
+### Create
+```shell
+curl -X POST "http://localhost:5000/create" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"content\": \"string\", \"subject\": \"string\"}"
+```
+```shell
+{
+    "msg": "success",
+    "status_code": 201
+}
+```
+
+### Delete
+```shell
+curl -X DELETE "http://127.0.0.1:5000/delete/1" -H "accept: application/json"```
+```
+```shell
+(204 NO CONTENT 만 옵니다.)
+```
+
+### Modify
+```shell
+curl -X PATCH "http://localhost:5000/modify/11" -H "accept: application/json"  -H "Content-Type: application/json" -d "{ \"content\": \"string\", \"subject\": \"string\"}"
+```
+```shell
+{
+    "msg": "success",
+    "status_code": 200
+}
+```
+
+### 로그인
+```shell
+curl -X POST "http://localhost:5000/auth/login/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"password\": \"string\", \"username\": \"string\"}"
+```
+
+```shell
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYzNDU0MzY4MSwianRpIjoiMTE3NzcyMmUtNmQ0MS00M2Y2LTg5YTktZGI0YTBlYTZlZmEwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6NCwibmJmIjoxNjM0NTQzNjgxLCJleHAiOjE2MzQ1NDQ1ODF9.-22JE3F9LySXfKdKByS-8-VB6N3NDdU2p_ZtCqC1m8Y",
+  "status_code": 200
+}
+```
+
+### 회원가입
+```shell
+curl -X POST "http://localhost:5000/auth/signup/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"password\": \"stri1231ng11\", \"username\": \"strinsdfg\"}"
+```
+```shell
+{
+  "msg": "strinsdfg signup success",
+  "status_code": 201
+}
+```
+
