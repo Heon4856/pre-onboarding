@@ -2,8 +2,8 @@ from repository import post_repository
 from datetime import datetime
 
 
-def get_post_list():
-    return post_repository.post_list()
+def get_post_list(page):
+    return post_repository.post_list(page)
 
 
 def get_detail(post_id):

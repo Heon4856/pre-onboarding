@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, make_response, jsonify,request
 from flask_apispec import marshal_with, use_kwargs
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from service import post_service
@@ -8,9 +8,10 @@ bp = Blueprint('post', __name__, url_prefix='/')
 
 
 @bp.route('/', methods=["GET"])
-@marshal_with(PostListSchema(many=True))
+@marshal_with(PostSchema(many=True))
 def post_list():
-    return post_service.get_post_list()
+    page = request.args.get('page', type=int, default=1)
+    return post_service.get_post_list(page)
 
 
 @bp.route('/detail/<int:post_id>/')

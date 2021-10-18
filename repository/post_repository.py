@@ -2,9 +2,9 @@ from model.models import Post
 from app import db
 
 
-def post_list():
-    post_list = Post.query.order_by(Post.create_date.desc())
-    return post_list
+def post_list(page):
+    post_list = Post.query.order_by(Post.create_date.desc()).paginate(page , per_page=10)
+    return post_list.items
 
 
 def detail(post_id):
