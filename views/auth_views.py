@@ -10,11 +10,11 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @use_kwargs(AuthRequestSchema)
 def signup(username, password):
     auth_service.signup(username, password)
-    return make_response('{} signup success'.format(username), 201)
+    return jsonify(msg='{} signup success'.format(username), status_code=201)
 
 
 @bp.route('/login/', methods=['POST'])
 @use_kwargs(AuthRequestSchema)
 @marshal_with(TokenSchema, code=200)
 def login(username, password):
-    return jsonify(access_token = auth_service.login(username, password))
+    return jsonify(access_token=auth_service.login(username, password), status_code=200)

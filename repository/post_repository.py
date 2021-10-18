@@ -1,20 +1,24 @@
 from model.models import Post
 from app import db
 
+
 def post_list():
     post_list = Post.query.order_by(Post.create_date.desc())
     return post_list
+
 
 def detail(post_id):
     post = Post.query.get_or_404(post_id)
     return post
 
-def create(subject,content,date,current_user):
-    post = Post(subject=subject, content=content, create_date=date,user_id=current_user)
+
+def create(subject, content, date, current_user):
+    post = Post(subject=subject, content=content, create_date=date, user_id=current_user)
     db.session.add(post)
     db.session.commit()
 
-def delete(post_id,current_user_id):
+
+def delete(post_id, current_user_id):
     post = Post.query.get_or_404(post_id)
     if post.user_id == current_user_id:
         db.session.delete(post)
@@ -23,12 +27,12 @@ def delete(post_id,current_user_id):
     return False
 
 
-def modify(post_id,subject,content,modify_date, current_user_id):
+def modify(post_id, subject, content, modify_date, current_user_id):
     post = Post.query.get_or_404(post_id)
-    if post.user_id ==current_user_id:
-        post.content=content
-        post.subject=subject
-        post.modify_date=modify_date
+    if post.user_id == current_user_id:
+        post.content = content
+        post.subject = subject
+        post.modify_date = modify_date
         db.session.commit()
         return True
     return False
