@@ -1,21 +1,19 @@
-from datetime import datetime
-from flask import Blueprint, render_template, url_for, request
-from flask_paginate import Pagination, get_page_parameter
-
-from werkzeug.utils import redirect
-from app import db
-from form import PostForm
+from flask import Blueprint
+from flask_apispec import marshal_with
 from service import post_service
+from serializers.post import PostListSchema, PostSchema
 
 bp = Blueprint('post', __name__, url_prefix='/')
 
 
 @bp.route('/', methods=["GET"])
+@marshal_with(PostListSchema(many=True))
 def post_list():
     return post_service.get_post_list()
 
 
 @bp.route('/detail/<int:post_id>/')
+@marshal_with(PostSchema)
 def detail(post_id):
     return post_service.get_detail(post_id)
 
