@@ -1,5 +1,5 @@
 from model.models import Post
-
+from app import db
 
 def post_list():
     post_list = Post.query.order_by(Post.create_date.desc())
@@ -9,11 +9,10 @@ def detail(post_id):
     post = Post.query.get_or_404(post_id)
     return post
 
-def create():
-    post = Post(subject=form.subject.data, content=form.content.data, create_date=datetime.now())
+def create(subject,content,date):
+    post = Post(subject=subject, content=content, create_date=date)
     db.session.add(post)
     db.session.commit()
-    return 200
 
 def delete():
     post = Post.query.get_or_404(post_id)
