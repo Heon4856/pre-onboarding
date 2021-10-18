@@ -6,16 +6,12 @@ def signup(username,password):
     user = User(username=username, password=password)
     db.session.add(user)
     db.session.commit()
-#
-# def delete(post_id):
-#     post = Post.query.get_or_404(post_id)
-#     db.session.delete(post)
-#     db.session.commit()
-#
-#
-# def modify(post_id,subject,content,modify_date):
-#     post = Post.query.get_or_404(post_id)
-#     post.content=content
-#     post.subject=subject
-#     post.modify_date=modify_date
-#     db.session.commit()
+
+def login(username,password):
+    user = User.query.filter_by(username=username).first()
+    if user.password == password:
+        return user.id
+    else:
+        return 0
+
+

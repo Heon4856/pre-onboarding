@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 
 import config
 
@@ -20,6 +21,9 @@ def create_app():
     from views import post_views, auth_views
     app.register_blueprint(post_views.bp)
     app.register_blueprint(auth_views.bp)
+
+    #jwt
+    jwt = JWTManager(app)
 
     return app
 
