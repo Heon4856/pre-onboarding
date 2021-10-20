@@ -2,8 +2,9 @@ import unittest
 from app import config, db
 import json
 from app import create_app
-from model.models import User,Post
+from model.models import User, Post
 from datetime import datetime
+
 
 class TestCase(unittest.TestCase):
 
@@ -11,61 +12,108 @@ class TestCase(unittest.TestCase):
         self.app = create_app(config)
         self.app_context = self.app.app_context()
         self.app_context.push()
+        self.db_setUp()
+        self.client = self.app.test_client()
+
+    def db_setUp(self):
+        authorized_username = "test1"
+        authorized_password = "password"
+        unauthorized_username = "test2"
+        unauthorized_user_password = "password"
         db.create_all()
-        user1= User(username="test1", password="test1")
-        user2 = User(username="test2", password="test2")
-        post1 = Post(subject="subject", content="content", create_date=datetime.now(), user_id=1)
-        db.session.add(post1)
+        user1 = User(username=authorized_username, password=authorized_password)
+        user2 = User(username=unauthorized_username, password=unauthorized_user_password)
+        post = Post(subject="subject", content="content", create_date=datetime.now(), user_id=1)
         db.session.add(user1)
         db.session.add(user2)
-
         db.session.commit()
-        self.client = self.app.test_client()
+        for i in range(11):
+            post = Post(subject="subject{}".format(i), content="content", create_date=datetime.now(), user_id=1)
+            db.session.add(post)
+            db.session.commit()
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
 
-    def test_post(self):
-        test_data = {"username": "test1", "password": "test1"}
+    def get_authorized_access_token(self):
+        test_data = {"username": "test1", "password": "password"}
         rv2 = self.client.post('/auth/login/', data=json.dumps(test_data), content_type='application/json')
         json_data = rv2.get_json()
         access_token = json_data["access_token"]
-        test_data2 = {"subject": "test3", "content": "test"}
-        rv = self.client.post('/create', data=json.dumps(test_data2), content_type='application/json',
-                         headers={"Authorization": "Bearer {}".format(access_token)})
+        return access_token
 
-        assert 201 == rv.status_code
+    def get_unauthorized_access_token(self):
+        test_data = {"username": "test2", "password": "password"}
+        rv2 = self.client.post('/auth/login/', data=json.dumps(test_data), content_type='application/json')
+        json_data = rv2.get_json()
+        access_token = json_data["access_token"]
+        return access_token
 
-    def test_base_route2(self):
+    def test_get_post_list(self):
+        """get_post_list시 pagenation이 되는지 테스트"""
         url = '/'
         response = self.client.get(url)
-        print(response.get_json())
         assert 200 == response.status_code
+        assert 10 == len(response.get_json())
 
-    def test_base_route(self):
+    def test_detail_api_with_exited_post_id(self):
+        """존재하는 게시글 식별자로 get요청시"""
         url = '/detail/1/'
         response = self.client.get(url)
         assert 200 == response.status_code
 
-    def test_modify(self):
-        test_data = {"username": "test1", "password": "test1"}
-        rv = self.client.post('/auth/login/', data=json.dumps(test_data), content_type='application/json')
-        json_data = rv.get_json()
-        access_token = json_data["access_token"]
+    def test_detail_api_with_not_exited_post_id(self):
+        """존재하지 않는 게시글 식별자로 get요청시"""
+        url = '/detail/1000/'
+        response = self.client.get(url)
+        print(response.status_code)
+        assert 404 == response.status_code
+
+    def test_post(self):
+        access_token = self.get_authorized_access_token()
+        test_data2 = {"subject": "test3", "content": "test"}
+        rv = self.client.post('/create', data=json.dumps(test_data2), content_type='application/json',
+                              headers={"Authorization": "Bearer {}".format(access_token)})
+
+        assert 201 == rv.status_code
+
+    def test_modify_with_authrorized_user(self):
+        access_token = self.get_authorized_access_token()
         test_data2 = {"subject": "modify", "content": "test"}
         rv = self.client.patch('/modify/1', data=json.dumps(test_data2), content_type='application/json',
-                          headers={"Authorization": "Bearer {}".format(access_token)})
+                               headers={"Authorization": "Bearer {}".format(access_token)})
         assert 200 == rv.status_code
 
-    def test_delete(self):
-        test_data = {"username": "test1", "password": "test1"}
-        rv = self.client.post('/auth/login/', data=json.dumps(test_data), content_type='application/json')
-        json_data = rv.get_json()
-        access_token = json_data["access_token"]
+    def test_modify_with_unauthrorized_user(self):
+        access_token = self.get_unauthorized_access_token()
+        test_data2 = {"subject": "modify", "content": "test"}
+        rv = self.client.patch('/modify/1', data=json.dumps(test_data2), content_type='application/json',
+                               headers={"Authorization": "Bearer {}".format(access_token)})
+        assert 401 == rv.status_code
+
+    def test_modify_not_existed_post(self):
+        access_token = self.get_unauthorized_access_token()
+        test_data2 = {"subject": "modify", "content": "test"}
+        rv = self.client.patch('/modify/1000', data=json.dumps(test_data2), content_type='application/json',
+                               headers={"Authorization": "Bearer {}".format(access_token)})
+        assert 404 == rv.status_code
+
+
+    def test_delete_with_authorized_user(self):
+        access_token = self.get_authorized_access_token()
         rv = self.client.delete('/delete/1', headers={"Authorization": "Bearer {}".format(access_token)})
         assert 204 == rv.status_code
 
+    def test_delete_with_unauthorized_user(self):
+        access_token = self.get_unauthorized_access_token()
+        rv = self.client.delete('/delete/1', headers={"Authorization": "Bearer {}".format(access_token)})
+        assert 401 == rv.status_code
+
+    def test_delete_with_not_exist_post(self):
+        access_token = self.get_authorized_access_token()
+        rv = self.client.delete('/delete/1000', headers={"Authorization": "Bearer {}".format(access_token)})
+        assert 404 == rv.status_code
 
 if __name__ == '__main__':
     unittest.main()
