@@ -49,7 +49,6 @@ def create_app():
     docs.register(auth_views.signup, blueprint=auth_views.bp.name)
     docs.register(auth_views.login, blueprint=auth_views.bp.name)
 
-
     @app.errorhandler(404)
     def page_not_found(error):
         return jsonify(msg="없는 페이지 입니다. 아마 존재하지 않는 게시글 id로 요청을 보내셨을 가능성이 높습니다.", status_code=404)

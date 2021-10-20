@@ -3,7 +3,7 @@ from app import db
 
 
 def post_list(page):
-    post_list = Post.query.order_by(Post.create_date.desc()).paginate(page , per_page=10)
+    post_list = Post.query.order_by(Post.create_date.desc()).paginate(page, per_page=10)
     return post_list.items
 
 
