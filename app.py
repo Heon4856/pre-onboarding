@@ -12,9 +12,12 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
-    app.config.from_object(config)
+    if test_config ==None:
+        app.config.from_object(config)
+    else:
+        app.config.from_object(config.Testing)
 
     apispec = APISpec(
         title='preonboard',
