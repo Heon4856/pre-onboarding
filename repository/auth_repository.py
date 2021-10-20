@@ -10,7 +10,10 @@ def signup(username, password):
 
 def login(username, password):
     user = User.query.filter_by(username=username).first()
-    if user.password == password:
-        return user.id
-    else:
+    if user == None:
         return 0
+    else:
+        if user.password == password:
+            return user.id
+        else:
+            return 0

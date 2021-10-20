@@ -10,3 +10,5 @@ def login(username, password):
     user_id_num = auth_repository.login(username, password)
     if user_id_num > 0:
         return create_access_token(user_id_num)
+    else:
+        return False
