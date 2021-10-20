@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
@@ -54,7 +54,7 @@ def create_app(test_config=None):
 
     @app.errorhandler(404)
     def page_not_found(error):
-        return jsonify(msg="없는 페이지 입니다. 아마 존재하지 않는 게시글 id로 요청을 보내셨을 가능성이 높습니다.", status_code=404)
+        return make_response(jsonify(msg="없는 페이지 입니다. 아마 존재하지 않는 게시글 id로 요청을 보내셨을 가능성이 높습니다.", status_code=404),404)
 
     return app
 
