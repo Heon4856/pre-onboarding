@@ -30,7 +30,7 @@ def detail(post_id):
 def create(subject, content):
     current_user = get_jwt_identity()
     post_service.create_post(subject, content, current_user)
-    return jsonify(msg='success', status_code=201)
+    return make_response(jsonify(msg='success', status_code=201), 201)
 
 
 @doc(tags=['post'],
@@ -42,7 +42,7 @@ def delete(post_id):
     current_user = get_jwt_identity()
     if post_service.delete_post_if_user_authorized(post_id, current_user):
         return make_response('', 204)
-    return jsonify(msg="권한이 없습니다. 해당 글을 쓰신 유저가 맞는지 확인해주세요.", status_code=401)
+    return make_response(jsonify(msg="권한이 없습니다. 해당 글을 쓰신 유저가 맞는지 확인해주세요.", status_code=401), 401)
 
 
 @doc(tags=['post'],
@@ -57,4 +57,4 @@ def modify(post_id, subject, content):
     if post_service.modify_post_if_user_authorized(post_id, subject, content, current_user):
         return jsonify(msg='success', status_code=200)
     else:
-        return jsonify(msg="권한이 없습니다. 해당 글을 쓰신 유저가 맞는지 확인해주세요", status_code=401)
+        return make_response(jsonify(msg="권한이 없습니다. 해당 글을 쓰신 유저가 맞는지 확인해주세요", status_code=401), 401)

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify,make_response
 from flask_apispec import use_kwargs, marshal_with,doc
 from service import auth_service
 from serializers.auth import AuthRequestSchema, TokenSchema
@@ -10,7 +10,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @use_kwargs(AuthRequestSchema)
 def signup(username, password):
     auth_service.signup(username, password)
-    return jsonify(msg='{} signup success'.format(username), status_code=201)
+    return make_response(jsonify(msg='{} signup success'.format(username), status_code=201),201)
 
 @doc(tags=['auth'], description='회원정보를 받아 accesstoken을 반환한다.')
 @bp.route('/login/', methods=['POST'])
