@@ -36,13 +36,13 @@ class TestCase(unittest.TestCase):
 
     def test_login_with_wrong_password(self):
         """잘못된 비밀번호로 로그인 시도"""
-        test_data = {"username": "test1", "password": "test122"}
+        test_data = {"username": "test1", "password": "wrong_password"}
         rv = self.client.post('/auth/login/', data=json.dumps(test_data), content_type='application/json')
         assert 404 == rv.status_code
 
     def test_login_with_not_found_username(self):
         """찾을 수 없는 유저이름으로 로그인 시도"""
-        test_data = {"username": "test12", "password": "test122"}
+        test_data = {"username": "wron_id", "password": "test122"}
         rv = self.client.post('/auth/login/', data=json.dumps(test_data), content_type='application/json')
         assert 404 == rv.status_code
 
