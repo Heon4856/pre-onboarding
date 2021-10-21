@@ -4,6 +4,7 @@ import json
 from app import create_app
 from model.models import User, Post
 from datetime import datetime
+from werkzeug.security import generate_password_hash
 
 
 class TestCase(unittest.TestCase):
@@ -22,8 +23,8 @@ class TestCase(unittest.TestCase):
         unauthorized_username = "test2"
         unauthorized_user_password = "password"
         db.create_all()
-        user1 = User(username=authorized_username, password=authorized_password)
-        user2 = User(username=unauthorized_username, password=unauthorized_user_password)
+        user1 = User(username=authorized_username, password=generate_password_hash(authorized_password))
+        user2 = User(username=unauthorized_username, password=generate_password_hash(unauthorized_user_password))
         db.session.add(user1)
         db.session.add(user2)
         db.session.commit()
