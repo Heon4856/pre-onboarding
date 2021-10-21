@@ -3,6 +3,7 @@ from app import config, db
 import json
 from app import create_app
 from model.models import User
+from werkzeug.security import generate_password_hash
 
 
 class TestCase(unittest.TestCase):
@@ -12,7 +13,7 @@ class TestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        user = User(username="test1", password="test1")
+        user = User(username="test1", password=generate_password_hash("test1"))
         db.session.add(user)
         db.session.commit()
         self.client = self.app.test_client()
@@ -31,6 +32,7 @@ class TestCase(unittest.TestCase):
         """로그인 테스트"""
         test_data = {"username": "test1", "password": "test1"}
         rv = self.client.post('/auth/login/', data=json.dumps(test_data), content_type='application/json')
+        print(rv.status_code)
         assert 200 == rv.status_code
         assert b'access_token' in rv.data
 

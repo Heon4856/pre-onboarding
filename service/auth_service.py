@@ -1,9 +1,12 @@
 from repository import auth_repository
 from flask_jwt_extended import create_access_token
+from werkzeug.security import generate_password_hash
+
 
 
 def signup(username, password):
-    return auth_repository.signup(username, password)
+    hashed_password=generate_password_hash(password)
+    return auth_repository.signup(username, hashed_password)
 
 
 def login(username, password):
