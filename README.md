@@ -3,7 +3,7 @@
 2. 과제가 무거운 것이 아니라, 게시판 CRUD API이기 때문에, Flask로 개발하였습니다.
 3. 오류가 나는 경우에는 어떠한 오류가 예상되는 지 알려주고자 하였습니다.
 4. 인증 인가로는 jwt토큰 방식을 사용하였습니다. 이는 세션을 통한 방식과 달리 서버측 부하를 낮출 수 있기 때문입니다.
-5. 유닛테스트 부분은 완벽하지 않지만, 시도해보았습니다.
+5. 유닛테스트 부분는 unittest로 작성하였습니다.
 
 
 # 2. 실행 방법
@@ -17,11 +17,21 @@ https://github.com/Heon4856/pre-onboarding.git
  ### 환경 구축
 
 ```bash
-python -m venv venv // 가상 환경 폴더 생성
+#윈도우
+python -m venv venv
 
-source venv/[Scripts|bin]/activate // 가상 환경 접속
+source venv/Scripts/activate
 
-pip install -r requirements.txt // 필요한 패키지 설치
+pip install -r requirements.txt
+```
+
+```bash
+#맥
+python -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
 ```
 
 ```shell
@@ -33,6 +43,13 @@ flask db upgrade
 ```shell
 flask run
 ```
+
+유닛테스트 실행
+```shell
+python -m unittest
+```
+
+
 
 
 # 3. api명세
